@@ -5,7 +5,10 @@
   "description": "Simple start for electron apps",
   "keywords": [],
   "author": "Dmitriy Kudasov <dev.kudasov@gmail.com>",
-  "repository": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devkudasov/electron-starter-kit"
+  },
   "license": "MIT",
   "main": "build/main.js",
   "scripts": {
