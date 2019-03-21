@@ -1,7 +1,7 @@
 {
   "name": "electron-starter-kit",
   "productName": "Electron Starter Kit",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Simple start for electron apps",
   "keywords": [],
   "author": "Dmitriy Kudasov <dev.kudasov@gmail.com>",
