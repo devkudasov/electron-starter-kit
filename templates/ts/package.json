@@ -10,8 +10,16 @@
     "url": "https://github.com/devkudasov/electron-starter-kit"
   },
   "license": "MIT",
-  "main": "bin/index.js",
-  "bin": {
-    "esk": "node bin/index.js"
+  "main": "build/main.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "npm run build && electron ."
+  },
+  "devDependencies": {
+    "electron": "^4.1.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
   }
 }
