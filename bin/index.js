@@ -6,12 +6,14 @@ const { exec } = require('child_process');
 const appTypes = require('./types.json');
 
 const appName = process.argv[2];
-const appType = process.argv[3].slice(2);
+let appType = process.argv[3];
 
 if (!appName || !appType) {
   console.error('Please provide valide command: est <appName> --<appType>');
   process.exit();
 }
+
+appType = appType.slice(2);
 
 if (!appTypes[appType]) {
   console.error(`Application doesn't support ${appType}. You should use ts | js.`);
@@ -26,7 +28,7 @@ fs.mkdir(appPath, err => {
     process.exit();
   }
 
-  fs.readdirSync(`./templates/${appType}`).forEach(file => {
+  fs.readdirSync(path.join('templates', appType).forEach(file => {
     fs.writeFile(path.join(appPath, file), err => {
       if (err) {
         console.error(err);
