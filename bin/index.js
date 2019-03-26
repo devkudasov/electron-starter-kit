@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const appTypes = require('./types.json');
+const { scanDir } = require('./dir-worker');
+const { exitIfError } = require('./errorHandler');
 
 const appName = process.argv[2];
 let appType = process.argv[3];
@@ -20,36 +21,18 @@ if (!appTypes[appType]) {
   process.exit();
 }
 
-const appPath = path.join(process.cwd(), appName);
+const templatePath = path.join(__dirname, '../templates', appType);
+let appPath = path.join(process.cwd(), appName);
 
-fs.mkdir(appPath, err => {
-  if (err) {
-    console.error(err);
-    process.exit();
-  }
+scanDir(templatePath, appPath)
+  .then(() => {
+    const npm = /^win/.test(process.platform) ? 'npm.cmd' : 'npm';
+    const command = spawn(npm, ['i'], { cwd: appPath });
 
-  fs.readdirSync(path.join('templates', appType).forEach(file => {
-    fs.writeFile(path.join(appPath, file), err => {
-      if (err) {
-        console.error(err);
-        process.exit();
-      }
+    command.stdout.on('data', data => {
+      console.log(data.toString());
+    });
+    command.stderr.on('data', data => {
+      exitIfError(data.toString());
     });
   });
-
-  fs.readdirSync(`./templates/${appType}/src`).forEach(file => {
-    fs.writeFile(path.join(appPath, file, 'src'), err => {
-      if (err) {
-        console.error(err);
-        process.exit();
-      }
-    });
-  });
-
-  exec(`cd ${appPath} && npm i`, err => {
-    if (err) {
-      console.error(err);
-      process.exit();
-    }
-  });
-});
