@@ -9,19 +9,19 @@ const { exitIfError } = require('./errorHandler');
 const appName = process.argv[2];
 let appType = process.argv[3];
 
-if (!appName || !appType) {
-  console.error('Please provide valide command: est <appName> --<appType>');
-  process.exit();
+if (!appName) {
+  exitIfError('Please provide valide command: est <AppName> [--<AppType>]');
 }
 
-appType = appType.slice(2);
+if (!appType) {
+  appType = '--js';
+}
 
 if (!appTypes[appType]) {
-  console.error(`Application doesn't support ${appType}. You should use ts | js.`);
-  process.exit();
+  exitIfError(`Application doesn't support ${appType}. You should use --ts | --js.`);
 }
 
-const templatePath = path.join(__dirname, '../templates', appType);
+const templatePath = path.join(__dirname, '../templates', appTypes[appType]);
 let appPath = path.join(process.cwd(), appName);
 
 scanDir(templatePath, appPath)
@@ -32,7 +32,12 @@ scanDir(templatePath, appPath)
     command.stdout.on('data', data => {
       console.log(data.toString());
     });
-    command.stderr.on('data', data => {
-      exitIfError(data.toString());
+    command.on('close', () => {
+      console.log(`
+        Instalation completed!
+
+        cd ${appName}
+        npm start
+      `);
     });
   });
