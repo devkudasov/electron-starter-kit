@@ -1,0 +1,8 @@
+{
+  "init": {
+    "constructor": "init"
+  },
+  "help": {
+    "constructor": "help"
+  }
+}
