@@ -15,7 +15,7 @@ class Init {
   _checkAppName() {
     return new Promise((resolve, reject) => {
       if (!this._appName) reject(`You should enter application name`);
-      if (!/^[a-zA-Z]+$/.test(this._appName)) reject(`Application name can contain only latin letters`);
+      if (!/^[a-zA-Z\-]+$/.test(this._appName)) reject(`Application name can contain only latin letters`);
 
       resolve();
     });
