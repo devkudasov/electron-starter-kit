@@ -1,20 +1,20 @@
-import path from 'path';
-import url from 'url';
+const path = require('path');
+const url = requrie('url');
 
-import { app, BrowserWindow } from 'electron';
+const { app, BrowserWindow } = require('electron');
 
-let mainWindow: BrowserWindow | null = null;
+let mainWindow = null;
 
-app.on('ready', (_: any) => {
+app.on('ready', () => {
     mainWindow = new BrowserWindow();
-    
+
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'ui', "index.html"),
         protocol: "file:",
         slashes: true
     }));
 
-    mainWindow.on('close', (_: any) => {
+    mainWindow.on('close', () => {
         mainWindow = null;
     });
 });
